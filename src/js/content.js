@@ -3,6 +3,15 @@ $(function() {
     // load originalItem
     if (!localStorage.duplicateForQiitaOriginalItem) { return; }
     var originalItem = JSON.parse(localStorage.duplicateForQiitaOriginalItem);
+    setTimeout(function(){
+      $.each(originalItem.tags, function(i) {
+        if (i != 0) {
+          $('.draftFormTagData_add:last').trigger('click');
+        }
+        $('.draftFormTagDatum_name:last').val(this)
+      });
+    }, 1000);
+
     $('#draft_item_title').val(originalItem.title)
     $('#draft_item_raw_body').val(originalItem.raw_body).trigger('keyup')
     delete localStorage.duplicateForQiitaOriginalItem;
@@ -20,7 +29,13 @@ $(function() {
   // save originalItem on click
   $(document).on('click', '.duplicate-for-qiita', function(e) {
     e.preventDefault();
+    var tags = [];
+    $('.itemsShowHeaderTags_tagName').each(function() {
+      tags.push($(this).text())
+    });
+
     $.get(location.href + ".json", function(data) {
+      data.tags = tags;
       localStorage.duplicateForQiitaOriginalItem = JSON.stringify(data);
       window.open('/drafts/new');
     });
