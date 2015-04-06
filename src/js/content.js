@@ -19,10 +19,11 @@ $(function() {
   } else if (location.pathname.match(/\/items\/[0-9a-f]{20}$/)) {
     // setup duplicate button
     if ($('.duplicate-for-qiita').length > 0) { return; }
-    var $target = $('[href="/drafts/new"]').parent();
+    var $target = $('[href="/drafts/new"]:first').parent();
     var $duplicateButton = $target.clone()
     var text = chrome.i18n.getMessage("duplicate");
     $duplicateButton.find('a').text(text).attr('href', 'javascript:void(0);').addClass('duplicate-for-qiita')
+    $duplicateButton.removeClass('btn-group').find('.dropdown-toggle').remove()
     $duplicateButton.insertAfter($target)
   }
 
@@ -30,7 +31,7 @@ $(function() {
   $(document).on('click', '.duplicate-for-qiita', function(e) {
     e.preventDefault();
     var tags = [];
-    $('.itemsShowHeaderTags_tagName').each(function() {
+    $('.teamSidebarContainer_section_tag_name').each(function() {
       tags.push($(this).text())
     });
 
